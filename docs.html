@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bigwall Protocol - Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Marked.js for parsing markdown in browser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .hero-bg { background-image: url('background.jpeg'); background-position: center; }
+        .gradient-overlay { background: linear-gradient(to top, rgba(17, 24, 39, 1) 0%, rgba(17, 24, 39, 0.7) 100%); }
+        /* Markdown styles */
+        .markdown-body h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; color: #fff; }
+        .markdown-body h2 { font-size: 1.8rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; color: #e5e7eb; border-bottom: 1px solid #374151; padding-bottom: 0.5rem; }
+        .markdown-body h3 { font-size: 1.4rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; color: #d1d5db; }
+        .markdown-body p { margin-bottom: 1rem; color: #9ca3af; line-height: 1.6; }
+        .markdown-body ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; color: #9ca3af; }
+        .markdown-body li { margin-bottom: 0.5rem; }
+        .markdown-body strong { color: #d1d5db; }
+        .markdown-body code { background: #374151; padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; color: #60a5fa; }
+        .markdown-body hr { border: 0; border-top: 1px solid #374151; margin: 2rem 0; }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <!-- Header -->
+    <header class="absolute top-0 left-0 right-0 z-10 p-6 bg-gray-900/80 backdrop-blur-sm border-b border-gray-800">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-white tracking-tighter hover:text-indigo-400 transition-colors">Bigwall Protocol</a>
+            <a href="index.html" class="hidden md:inline-block bg-white text-gray-900 font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-gray-200 transition-colors">Back to Home</a>
+        </div>
+    </header>
+
+    <!-- Content Section -->
+    <section class="pt-32 pb-24 min-h-screen">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <div id="content" class="markdown-body bg-gray-800/50 p-8 md:p-12 rounded-2xl border border-gray-700 shadow-xl">
+                <div class="flex justify-center items-center h-48">
+                    <div class="animate-pulse flex flex-col items-center">
+                        <div class="h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                        <p class="text-gray-400">Loading documentation...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 py-8 border-t border-gray-700">
+        <div class="container mx-auto px-6 text-center text-gray-500">
+            <p>&copy; 2025 Bigwall Protocol. A decentralized community project.</p>
+            <div class="mt-4">
+                <a href="docs.html" class="mx-2 hover:text-white">Docs</a>
+                <a href="https://github.com/0at/bigwall-protocol" class="mx-2 hover:text-white">GitHub</a>
+                <a href="https://discord.gg/5ZaZVuuf" class="mx-2 hover:text-white">Community</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Fetch and render the markdown documentation
+        document.addEventListener('DOMContentLoaded', () => {
+            // Adjust the path to where the MD file is served. Assuming PUBLIC_READY_DOCS is mounted/served at the root level alongside the landing page, or mapped directly.
+            fetch('../PUBLIC_READY_DOCS/bigwall_standards.md')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    document.getElementById('content').innerHTML = marked.parse(text);
+                })
+                .catch(error => {
+                    console.error('Error fetching markdown:', error);
+                    document.getElementById('content').innerHTML = `
+                        <div class="text-center py-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                            <h2 class="text-2xl font-bold text-white mb-2">Documentation Not Found</h2>
+                            <p class="text-gray-400">Please ensure the PUBLIC_READY_DOCS directory is available and served correctly at the root folder.</p>
+                            <p class="text-xs text-gray-500 mt-4 border-t border-gray-700 pt-4">Expected path: ../PUBLIC_READY_DOCS/bigwall_standards.md</p>
+                        </div>
+                    `;
+                });
+        });
+    </script>
+</body>
+</html>
