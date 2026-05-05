@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y tidy
+      - name: tidy each .html
+        run: |
+          set -e
+          for f in *.html; do
+            [ -f "$f" ] || continue
+            tidy -errors -quiet "$f" || true
+          done
+      - name: link-check (best effort)
+        run: |
+          if command -v npx >/dev/null; then
+            npx -y broken-link-checker -q -e -f http://localhost || true
+          fi
